@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Webhook Sender</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            position: relative;
+        }
+
+        .background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .webhook-container {
+            width: 300px;
+            background-color: rgba(32, 34, 37, 0.8); /* Semi-transparent background */
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .webhook-header {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: #2f3136;
+            color: #ffffff;
+            border: 1px solid #40444b;
+            border-radius: 5px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #5865f2;
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        .send-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5865f2;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .send-button:hover {
+            background-color: #4752c4;
+        }
+
+        .status-message {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <video class="background-video" autoplay loop muted>
+        <source src="src/videos/end.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+
+    <div class="webhook-container">
+        <div class="webhook-header">Discord Webhook Sender</div>
+        <div class="input-group">
+            <label for="webhook-url">Webhook URL</label>
+            <input type="url" id="webhook-url" placeholder="Paste your webhook URL here" required>
+        </div>
+        <div class="input-group">
+            <label for="webhook-message">Message</label>
+            <textarea id="webhook-message" placeholder="Write your message here" required></textarea>
+        </div>
+        <button class="send-button" onclick="sendWebhook()">Send</button>
+        <div class="status-message" id="status-message"></div>
+    </div>
+
+    <script>
+        async function sendWebhook() {
+            const webhookUrl = document.getElementById('webhook-url').value;
+            const message = document.getElementById('webhook-message').value;
+            const statusMessage = document.getElementById('status-message');
+
+            statusMessage.textContent = '';
+
+            if (!webhookUrl || !message) {
+                statusMessage.textContent = 'Please fill in both fields.';
+                statusMessage.style.color = '#ed4245'; 
+                return;
+            }
+
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: message }),
+                });
+
+                if (response.ok) {
+                    statusMessage.textContent = 'Message sent successfully!';
+                    statusMessage.style.color = '#3ba55d'; 
+                } else {
+                    statusMessage.textContent = `Failed to send: ${response.statusText}`;
+                    statusMessage.style.color = '#faa61a'; 
+                }
+            } catch (error) {
+                statusMessage.textContent = 'Error sending message. Check the webhook URL.';
+                statusMessage.style.color = '#ed4245'; 
+            }
+        }
+    </script>
+</body>
+</html>
