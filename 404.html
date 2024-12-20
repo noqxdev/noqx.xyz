@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Poppins", sans-serif;
+            user-select: none;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .background .darken {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 5;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: #e7e7e7;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            border: 2px solid #2b3040;
+            z-index: 15;
+            transition: transform 0.1s ease-out;
+        }
+
+        .overlay h1 {
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+
+        .overlay p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: white;
+            background-color: #4752c4;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #3c45a4;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const videos = [
+            "src/videos/nightSnow.mp4",
+            "src/videos/end.mp4",
+            "src/videos/nightSnow.mp4"
+        ];
+
+        const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const videoElement = document.querySelector(".background-video source");
+            videoElement.src = randomVideo;
+            videoElement.parentElement.load(); 
+        });
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+    <div class="background">
+        <video class="background-video" autoplay loop muted>
+            <source src="src/videos/nightSnow.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="darken"></div>
+    </div>
+
+    <div class="overlay">
+        <h1>404</h1>
+        <p>Oops! The page you're looking for doesn't exist.</p>
+        <button class="back-button" onclick="goBack()">Go Back</button>
+    </div>
+</body>
+</html>
